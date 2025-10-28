@@ -898,23 +898,29 @@ function HomePage({
 }) {
   const latestReport = reports[0]
   return (
-    <div data-dashboard-root>
-      <header class="bg-slate-900 border-b border-slate-800">
-        <div class="mx-auto max-w-6xl px-6 py-12">
-          <p class="text-sm uppercase tracking-wide text-emerald-400">ROI Performance Dashboard</p>
-          <h1 class="mt-3 text-4xl font-semibold text-white md:text-5xl">NFL Edge Betting Results</h1>
-          <p class="mt-4 max-w-2xl text-slate-300">
-            Live view of current bets in market plus historical week-by-week ROI pulled directly from your
-            uploaded PDF reports. Updated automatically whenever new picks or results land in the admin portal.
-          </p>
+    <div data-dashboard-root style="position: relative; z-index: 1;">
+      <header class="relative border-b border-slate-700/50">
+        <div class="mx-auto max-w-6xl px-6 py-16">
+          <div class="reveal">
+            <div class="inline-block">
+              <p class="text-sm uppercase tracking-widest font-semibold gradient-accent bg-clip-text text-transparent">ROI Performance Dashboard</p>
+            </div>
+            <h1 class="mt-4 text-5xl font-bold text-white md:text-6xl lg:text-7xl bg-gradient-to-br from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">
+              NFL Edge Betting Results
+            </h1>
+            <p class="mt-6 max-w-2xl text-lg text-slate-300 leading-relaxed">
+              Live view of current bets in market plus historical week-by-week ROI pulled directly from your
+              uploaded PDF reports. Updated automatically whenever new picks or results land in the admin portal.
+            </p>
+          </div>
           {latestReport ? (
-            <div class="mt-8 grid gap-4 rounded-2xl border border-slate-800 bg-slate-950/60 p-6 backdrop-blur">
-              <div class="flex flex-wrap items-center justify-between gap-3">
+            <div class="mt-10 glass-card rounded-3xl p-8 reveal metric-glow">
+              <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
                 <div>
-                  <dt class="text-sm font-medium text-slate-400">Most Recent Report</dt>
-                  <dd class="text-xl font-semibold text-white">{latestReport.label}</dd>
+                  <dt class="text-sm font-medium uppercase tracking-wide text-slate-400">Most Recent Report</dt>
+                  <dd class="text-2xl font-bold text-white mt-2">{latestReport.label}</dd>
                 </div>
-                <span class="inline-flex items-center rounded-full border border-emerald-500 px-4 py-1 text-sm font-medium text-emerald-300">
+                <span class="inline-flex items-center rounded-full gradient-accent px-6 py-2 text-sm font-bold text-white shadow-lg shadow-purple-500/30">
                   ROI {formatPercent(latestReport.roi_percent ?? undefined)}
                 </span>
               </div>
@@ -927,16 +933,16 @@ function HomePage({
                 />
                 <MetricCard label="Hit Rate" value={latestReport.hit_rate ? `${latestReport.hit_rate.toFixed(1)}%` : '—'} />
               </dl>
-              {latestReport.summary ? <p class="text-sm text-slate-400">{latestReport.summary}</p> : null}
+              {latestReport.summary ? <p class="mt-4 text-sm text-slate-300 leading-relaxed">{latestReport.summary}</p> : null}
             </div>
           ) : null}
         </div>
       </header>
 
       <main class="mx-auto max-w-6xl space-y-12 px-6 py-12">
-        <section class="grid gap-6 rounded-2xl border border-slate-800 bg-slate-950/80 p-6 shadow-lg shadow-emerald-500/10">
-          <h2 class="text-2xl font-semibold text-white">Portfolio Overview</h2>
-          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <section class="glass-card rounded-3xl p-8 reveal">
+          <h2 class="text-3xl font-bold text-white mb-8 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Portfolio Overview</h2>
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             <MetricCard label="Active Bets" value={currentBets.length.toString()} subtle />
             <MetricCard label="Total Wagered" value={formatCurrency(totals.totalWagered)} />
             <MetricCard
@@ -952,36 +958,36 @@ function HomePage({
           </div>
         </section>
 
-        <section class="grid gap-6 rounded-2xl border border-slate-800 bg-slate-950/80 p-6" id="current-bets">
-          <div class="flex items-center justify-between gap-4">
-            <h2 class="text-2xl font-semibold text-white">Current Bets In Market</h2>
-            <span class="rounded-full border border-slate-700 px-3 py-1 text-xs uppercase tracking-wide text-slate-400">Live</span>
+        <section class="glass-card rounded-3xl p-8 reveal" id="current-bets">
+          <div class="flex items-center justify-between gap-4 mb-6">
+            <h2 class="text-3xl font-bold text-white bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Current Bets In Market</h2>
+            <span class="rounded-full gradient-accent px-4 py-2 text-xs uppercase tracking-wider font-bold text-white shadow-lg shadow-green-500/20 animate-pulse">Live</span>
           </div>
           {currentBets.length === 0 ? (
-            <p class="text-sm text-slate-400">No open tickets right now. Upload today&apos;s picks from the admin panel to populate this list.</p>
+            <p class="text-base text-slate-300">No open tickets right now. Upload today&apos;s picks from the admin panel to populate this list.</p>
           ) : (
-            <div class="overflow-hidden rounded-xl border border-slate-800">
-              <table class="min-w-full divide-y divide-slate-800 text-sm">
-                <thead class="bg-slate-900/60 text-slate-400">
+            <div class="overflow-hidden rounded-2xl">
+              <table class="min-w-full text-sm">
+                <thead class="text-slate-300">
                   <tr>
-                    <th class="px-4 py-3 text-left font-medium">Bet</th>
-                    <th class="px-4 py-3 text-left font-medium">Stake</th>
-                    <th class="px-4 py-3 text-left font-medium">Odds</th>
-                    <th class="px-4 py-3 text-left font-medium">Event Date</th>
-                    <th class="px-4 py-3 text-left font-medium">Category</th>
+                    <th class="text-left">Bet</th>
+                    <th class="text-left">Stake</th>
+                    <th class="text-left">Odds</th>
+                    <th class="text-left">Event Date</th>
+                    <th class="text-left">Category</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-900/60 bg-slate-950/40 text-slate-200">
+                <tbody class="text-slate-200">
                   {currentBets.map((bet) => (
                     <tr key={bet.id}>
-                      <td class="px-4 py-3">
-                        <div class="font-medium text-white">{bet.title}</div>
-                        {bet.description ? <div class="text-xs text-slate-400">{bet.description}</div> : null}
+                      <td>
+                        <div class="font-semibold text-white">{bet.title}</div>
+                        {bet.description ? <div class="text-xs text-slate-400 mt-1">{bet.description}</div> : null}
                       </td>
-                      <td class="px-4 py-3">{formatCurrency(bet.stake)}</td>
-                      <td class="px-4 py-3">{bet.odds ?? '—'}</td>
-                      <td class="px-4 py-3">{formatDate(bet.event_date)}</td>
-                      <td class="px-4 py-3">{bet.category ?? '—'}</td>
+                      <td class="font-medium">{formatCurrency(bet.stake)}</td>
+                      <td class="text-blue-300 font-medium">{bet.odds ?? '—'}</td>
+                      <td class="text-slate-300">{formatDate(bet.event_date)}</td>
+                      <td class="text-slate-300">{bet.category ?? '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -990,39 +996,41 @@ function HomePage({
           )}
         </section>
 
-        <section class="grid gap-6">
+        <section class="grid gap-8 reveal">
           <div class="flex items-center justify-between gap-4">
-            <h2 class="text-2xl font-semibold text-white">Historical ROI Reports</h2>
+            <h2 class="text-3xl font-bold text-white bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Historical ROI Reports</h2>
             <a
               href="#admin"
-              class="inline-flex items-center gap-2 rounded-full border border-slate-600 px-4 py-1 text-sm text-slate-300 hover:border-emerald-400 hover:text-emerald-300"
+              class="button inline-flex items-center gap-2 rounded-full glass-card px-6 py-2 text-sm font-semibold text-white hover:shadow-lg hover:shadow-purple-500/20 transition-all"
             >
               Manage reports
             </a>
           </div>
-          <div class="grid gap-4 md:grid-cols-2">
+          <div class="grid gap-6 md:grid-cols-2">
             {reports.map((report) => (
-              <article key={report.id} class="rounded-2xl border border-slate-800 bg-slate-950/70 p-5 transition hover:border-emerald-400/60">
+              <article key={report.id} class="glass-card rounded-3xl p-6 metric-glow">
                 <header class="flex items-start justify-between gap-4">
                   <div>
-                    <p class="text-xs uppercase tracking-wide text-slate-500">{formatDate(report.report_date)}</p>
-                    <h3 class="mt-2 text-lg font-semibold text-white">{report.label}</h3>
+                    <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">{formatDate(report.report_date)}</p>
+                    <h3 class="mt-3 text-xl font-bold text-white">{report.label}</h3>
                   </div>
-                  <span class={`inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold ${
-                    (report.roi_percent ?? 0) >= 0 ? 'border border-emerald-500 text-emerald-300' : 'border border-rose-500 text-rose-300'
+                  <span class={`inline-flex items-center rounded-full px-4 py-2 text-xs font-bold shadow-lg ${
+                    (report.roi_percent ?? 0) >= 0
+                      ? 'bg-gradient-to-r from-emerald-500 to-green-400 text-white shadow-emerald-500/30'
+                      : 'bg-gradient-to-r from-rose-500 to-red-400 text-white shadow-rose-500/30'
                   }`}>
                     {formatPercent(report.roi_percent ?? undefined)} ROI
                   </span>
                 </header>
                 {report.summary ? <p class="mt-4 text-sm leading-relaxed text-slate-300">{report.summary}</p> : null}
-                <dl class="mt-4 grid gap-3 text-sm text-slate-400 sm:grid-cols-3">
+                <dl class="mt-5 grid gap-4 text-sm sm:grid-cols-3">
                   <MetricStat label="Wagered" value={formatCurrency(report.total_wagered)} />
                   <MetricStat label="Net" value={formatCurrency(report.net_profit)} />
                   <MetricStat label="Return" value={formatCurrency(report.total_return)} />
                 </dl>
                 {report.source_pdf ? (
                   <footer class="mt-4 text-xs text-slate-500">
-                    Source: <code class="font-mono">{report.source_pdf}</code>
+                    Source: <code class="font-mono hover:text-purple-400 transition-colors">{report.source_pdf}</code>
                   </footer>
                 ) : null}
               </article>
@@ -1030,43 +1038,43 @@ function HomePage({
           </div>
         </section>
 
-        <section class="grid gap-6 rounded-2xl border border-slate-800 bg-slate-950/80 p-6" id="recent-results">
-          <h2 class="text-2xl font-semibold text-white">Recent Graded Bets</h2>
+        <section class="glass-card rounded-3xl p-8 reveal" id="recent-results">
+          <h2 class="text-3xl font-bold text-white mb-6 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Recent Graded Bets</h2>
           {recentBets.length === 0 ? (
-            <p class="text-sm text-slate-400">Graded results will appear here once bets are matched to an uploaded report.</p>
+            <p class="text-base text-slate-300">Graded results will appear here once bets are matched to an uploaded report.</p>
           ) : (
-            <div class="overflow-x-auto">
-              <table class="min-w-full divide-y divide-slate-800 text-sm">
-                <thead class="bg-slate-900/60 text-slate-400">
+            <div class="overflow-x-auto rounded-2xl">
+              <table class="min-w-full text-sm">
+                <thead class="text-slate-300">
                   <tr>
-                    <th class="px-4 py-3 text-left font-medium">Bet</th>
-                    <th class="px-4 py-3 text-left font-medium">Stake</th>
-                    <th class="px-4 py-3 text-left font-medium">Result</th>
-                    <th class="px-4 py-3 text-left font-medium">Notes</th>
-                    <th class="px-4 py-3 text-left font-medium">Report</th>
+                    <th class="text-left">Bet</th>
+                    <th class="text-left">Stake</th>
+                    <th class="text-left">Result</th>
+                    <th class="text-left">Notes</th>
+                    <th class="text-left">Report</th>
                   </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-900/60 bg-slate-950/40 text-slate-200">
+                <tbody class="text-slate-200">
                   {recentBets.map((bet) => (
                     <tr key={bet.id}>
-                      <td class="px-4 py-3">
-                        <div class="font-medium text-white">{bet.title}</div>
-                        {bet.category ? <div class="text-xs text-slate-400">{bet.category}</div> : null}
+                      <td>
+                        <div class="font-semibold text-white">{bet.title}</div>
+                        {bet.category ? <div class="text-xs text-slate-400 mt-1">{bet.category}</div> : null}
                       </td>
-                      <td class="px-4 py-3">{formatCurrency(bet.stake)}</td>
-                      <td class={`px-4 py-3.capitalize ${
+                      <td class="font-medium">{formatCurrency(bet.stake)}</td>
+                      <td class={`capitalize font-bold ${
                         bet.status === 'won'
-                          ? 'text-emerald-300'
+                          ? 'text-emerald-400'
                           : bet.status === 'lost'
-                          ? 'text-rose-300'
+                          ? 'text-rose-400'
                           : bet.status === 'push'
-                          ? 'text-amber-300'
+                          ? 'text-amber-400'
                           : 'text-slate-300'
                       }`}>
                         {bet.status}
                       </td>
-                      <td class="px-4 py-3 text-slate-400">{bet.result_notes ?? '—'}</td>
-                      <td class="px-4 py-3 text-slate-400">{bet.report_id ?? '—'}</td>
+                      <td class="text-slate-300">{bet.result_notes ?? '—'}</td>
+                      <td class="text-slate-300">{bet.report_id ?? '—'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -1076,8 +1084,14 @@ function HomePage({
         </section>
       </main>
 
-      <footer class="border-t border-slate-900 bg-slate-950/80 py-6 text-center text-xs text-slate-500">
-        Built for rapid ROI tracking — upload new data from the admin console to refresh live metrics instantly.
+      <footer class="relative border-t border-slate-700/50 glass-card py-8 text-center">
+        <p class="text-sm text-slate-400">
+          Built for rapid ROI tracking — upload new data from the admin console to refresh live metrics instantly.
+        </p>
+        <div class="mt-3 flex items-center justify-center gap-2">
+          <div class="h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></div>
+          <span class="text-xs text-slate-500">Live Dashboard</span>
+        </div>
       </footer>
     </div>
   )
@@ -1096,118 +1110,121 @@ function MetricCard({
 }) {
   const containerTone =
     tone === 'positive'
-      ? 'border-emerald-500/40 bg-emerald-500/5'
+      ? 'border-emerald-400/30 bg-gradient-to-br from-emerald-500/10 to-green-500/5'
       : tone === 'negative'
-      ? 'border-rose-500/40 bg-rose-500/5'
-      : 'border-slate-800 bg-slate-900/40'
+      ? 'border-rose-400/30 bg-gradient-to-br from-rose-500/10 to-red-500/5'
+      : 'border-slate-700/50 bg-gradient-to-br from-slate-800/30 to-slate-900/20'
   const valueTone =
     tone === 'positive' ? 'text-emerald-300' : tone === 'negative' ? 'text-rose-300' : 'text-white'
+  const glowClass = tone !== 'neutral' ? 'metric-glow' : ''
   return (
-    <div class={`rounded-xl border ${containerTone} p-4`}>
-      <p class={`text-xs uppercase tracking-wide ${subtle ? 'text-slate-400' : 'text-slate-500'}`}>{label}</p>
-      <p class={`mt-2 text-xl font-semibold ${valueTone}`}>{value}</p>
+    <div class={`rounded-2xl border backdrop-blur-sm ${containerTone} ${glowClass} p-6 transition-all hover:scale-105`}>
+      <p class={`text-xs uppercase tracking-wider font-semibold ${subtle ? 'text-slate-400' : 'text-slate-400'}`}>{label}</p>
+      <p class={`mt-3 text-2xl font-bold ${valueTone}`}>{value}</p>
     </div>
   )
 }
 
 function MetricStat({ label, value }: { label: string; value: string }) {
   return (
-    <div>
-      <p class="text-xs uppercase tracking-wide text-slate-500">{label}</p>
-      <p class="mt-1 font-medium text-slate-200">{value}</p>
+    <div class="text-center">
+      <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">{label}</p>
+      <p class="mt-2 font-bold text-white text-base">{value}</p>
     </div>
   )
 }
 
 function AdminPage() {
   return (
-    <div data-admin-root class="min-h-screen bg-slate-950">
+    <div data-admin-root class="min-h-screen" style="position: relative; z-index: 1;">
       <div class="mx-auto max-w-5xl px-6 py-12 text-white">
-        <header class="mb-10">
-          <p class="text-sm uppercase tracking-wide text-emerald-400">Admin Console</p>
-          <h1 class="mt-3 text-4xl font-semibold">Manage Bets & ROI Reports</h1>
-          <p class="mt-4 max-w-2xl text-slate-300">
+        <header class="mb-12 reveal">
+          <div class="inline-block">
+            <p class="text-sm uppercase tracking-widest font-semibold gradient-accent bg-clip-text text-transparent">Admin Console</p>
+          </div>
+          <h1 class="mt-4 text-5xl font-bold bg-gradient-to-br from-white via-slate-100 to-slate-300 bg-clip-text text-transparent">Manage Bets & ROI Reports</h1>
+          <p class="mt-6 max-w-2xl text-lg text-slate-300 leading-relaxed">
             Upload daily picks, ingest ROI PDFs via Gemini OCR, and reconcile results with existing tickets. Provide the
             admin token with each action to authorize updates.
           </p>
         </header>
 
         <div class="grid gap-10">
-          <section class="rounded-2xl border border-slate-800 bg-slate-900/70 p-6" id="admin">
-            <h2 class="text-xl font-semibold">1. Add Current Bets</h2>
-            <p class="mt-2 text-sm text-slate-300">
+          <section class="glass-card rounded-3xl p-8 reveal" id="admin">
+            <h2 class="text-2xl font-bold text-white mb-3">1. Add Current Bets</h2>
+            <p class="mt-2 text-sm text-slate-300 leading-relaxed">
               Paste today&apos;s plays below. Each line should include title, stake, odds, event date (optional), category, and
-              description separated by pipes.| Example: <code class="font-mono">Texans -3 | 150 | -110 | 2025-09-18 | Spread | AFC South opener</code>
+              description separated by pipes. Example: <code class="font-mono text-purple-300 bg-slate-800/50 px-2 py-1 rounded">Texans -3 | 150 | -110 | 2025-09-18 | Spread | AFC South opener</code>
             </p>
-            <form id="bet-upload-form" class="mt-4 space-y-4">
+            <form id="bet-upload-form" class="mt-6 space-y-5">
               <textarea
                 name="bets"
                 rows={6}
-                class="w-full rounded-xl border border-slate-700 bg-slate-950/60 p-4 font-mono text-sm text-slate-100 focus:border-emerald-400 focus:outline-none"
+                class="w-full rounded-2xl border border-slate-600/50 bg-slate-900/60 backdrop-blur-sm p-4 font-mono text-sm text-slate-100 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all"
                 placeholder="Bet title | stake | odds | date | category | description"
               ></textarea>
-              <div class="flex flex-wrap items-center gap-3">
+              <div class="flex flex-wrap items-center gap-4">
                 <input
                   name="adminToken"
                   type="password"
-                  class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-emerald-400 focus:outline-none md:w-64"
+                  class="flex-1 min-w-[200px] rounded-2xl border border-slate-600/50 bg-slate-900/60 backdrop-blur-sm px-4 py-3 text-sm text-slate-100 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all"
                   placeholder="Admin token"
                   required
                 />
                 <button
                   type="submit"
-                  class="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-emerald-950 transition hover:bg-emerald-400"
+                  class="button gradient-accent px-6 py-3 rounded-2xl text-sm font-bold text-white shadow-lg shadow-emerald-500/30 transition-all hover:shadow-emerald-500/50 hover:scale-105"
                 >
                   Save Bets
                 </button>
-                <p class="text-xs text-slate-400">Bets appear immediately on the public page once saved.</p>
               </div>
-              <p class="text-xs text-emerald-400" data-response="bets"></p>
+              <p class="text-xs text-slate-400">Bets appear immediately on the public page once saved.</p>
+              <p class="text-xs text-emerald-400 font-medium" data-response="bets"></p>
             </form>
           </section>
 
-          <section class="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-            <h2 class="text-xl font-semibold">2. Upload ROI PDF</h2>
-            <p class="mt-2 text-sm text-slate-300">
+          <section class="glass-card rounded-3xl p-8 reveal">
+            <h2 class="text-2xl font-bold text-white mb-3">2. Upload ROI PDF</h2>
+            <p class="mt-2 text-sm text-slate-300 leading-relaxed">
               Drop the weekly ROI PDF exported from your research deck. Gemini OCR parses totals & individual results, then
               matches them to open bets automatically. PDF uploads stay private within your worker storage.
             </p>
-            <form id="report-upload-form" class="mt-4 space-y-4">
+            <form id="report-upload-form" class="mt-6 space-y-5">
               <input
                 type="file"
                 name="report"
                 accept="application/pdf"
-                class="block w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-emerald-400 focus:outline-none"
+                class="block w-full rounded-2xl border border-slate-600/50 bg-slate-900/60 backdrop-blur-sm px-4 py-3 text-sm text-slate-100 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-purple-500 file:text-white hover:file:bg-purple-400"
                 required
               />
-              <div class="flex flex-wrap items-center gap-3">
+              <div class="flex flex-wrap items-center gap-4">
                 <input
                   name="adminToken"
                   type="password"
-                  class="w-full rounded-lg border border-slate-700 bg-slate-950/60 px-3 py-2 text-sm text-slate-100 focus:border-emerald-400 focus:outline-none md:w-64"
+                  class="flex-1 min-w-[200px] rounded-2xl border border-slate-600/50 bg-slate-900/60 backdrop-blur-sm px-4 py-3 text-sm text-slate-100 focus:border-purple-400 focus:ring-2 focus:ring-purple-400/20 focus:outline-none transition-all"
                   placeholder="Admin token"
                   required
                 />
                 <button
                   type="submit"
-                  class="inline-flex items-center gap-2 rounded-lg bg-emerald-500 px-4 py-2 text-sm font-medium text-emerald-950 transition hover:bg-emerald-400"
+                  class="button gradient-accent px-6 py-3 rounded-2xl text-sm font-bold text-white shadow-lg shadow-blue-500/30 transition-all hover:shadow-blue-500/50 hover:scale-105"
                 >
                   Process Report
                 </button>
               </div>
-              <p class="text-xs text-emerald-400" data-response="report"></p>
+              <p class="text-xs text-emerald-400 font-medium" data-response="report"></p>
             </form>
           </section>
 
-          <section class="rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
-            <h2 class="text-xl font-semibold">3. Recent Uploads</h2>
-            <p class="mt-2 text-sm text-slate-300">
+          <section class="glass-card rounded-3xl p-8 reveal">
+            <h2 class="text-2xl font-bold text-white mb-3">3. Recent Uploads</h2>
+            <p class="mt-2 text-sm text-slate-300 leading-relaxed">
               Quick glance at the latest graded reports and their ROI metrics. Refreshes automatically after each
               successful upload.
             </p>
             <div
               data-admin-reports
-              class="mt-4 grid gap-3 rounded-xl border border-slate-800 bg-slate-950/60 p-4 text-sm text-slate-300"
+              class="mt-6 grid gap-3 rounded-2xl border border-slate-700/50 bg-slate-900/40 backdrop-blur-sm p-5 text-sm text-slate-300"
             >
               Loading recent reports…
             </div>
