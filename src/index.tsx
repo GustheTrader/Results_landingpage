@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
-import { serveStatic } from 'hono/cloudflare-pages'
 import { renderer } from './renderer'
 
 export type Bindings = {
@@ -82,7 +81,8 @@ const MAX_PDF_BYTES = 5 * 1024 * 1024 // 5 MB ceiling per upload
 
 const app = new Hono<AppEnv>()
 
-app.use('/static/*', serveStatic({ root: './public' }))
+// Static files are served by Vercel automatically from /public
+// For Cloudflare deployment, uncomment: app.use('/static/*', serveStatic({ root: './public' }))
 app.use('/api/*', cors())
 
 const currencyFormatter = new Intl.NumberFormat('en-US', {
