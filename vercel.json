@@ -1,14 +1,5 @@
 {
-  "buildCommand": "npm install && npm run build",
-  "installCommand": "npm install",
   "rewrites": [
-    {
-      "source": "/static/(.*)",
-      "destination": "/public/static/$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/api/index"
-    }
+    { "source": "/(.*)", "destination": "/api" }
   ]
 }
