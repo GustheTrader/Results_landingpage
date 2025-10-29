@@ -506,11 +506,23 @@ async function getBetsByStatus(env: Bindings, status: string) {
 app.use('*', renderer)
 
 app.get('/', async (c) => {
-  const [reports, currentBets, recentBets] = await Promise.all([
-    getReports(c.env),
-    getCurrentBets(c.env),
-    getRecentResults(c.env)
-  ])
+  let reports: ReportRow[] = []
+  let currentBets: BetRow[] = []
+  let recentBets: BetRow[] = []
+
+  // Try to fetch data, but don't crash if database isn't configured
+  try {
+    if (c.env?.SUPABASE_URL) {
+      [reports, currentBets, recentBets] = await Promise.all([
+        getReports(c.env),
+        getCurrentBets(c.env),
+        getRecentResults(c.env)
+      ])
+    }
+  } catch (error) {
+    console.error('Database error (app will still render):', error)
+    // Continue with empty arrays - UI will show "no data" messages
+  }
 
   const totals = reports.reduce(
     (acc, report) => {
