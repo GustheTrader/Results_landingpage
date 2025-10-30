@@ -1,0 +1,404 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design System Definition
+ * All colors, gradients, fonts, and effects are defined here.
+ * All colors MUST be HSL for consistent theme support.
+ */
+
+@layer base {
+  :root {
+    /* Color Palette - Neutral Neumorphic Theme */
+    --background: 0 0% 88%;
+    --foreground: 0 0% 25%;
+
+    --card: 0 0% 88%;
+    --card-foreground: 0 0% 25%;
+
+    --popover: 0 0% 88%;
+    --popover-foreground: 0 0% 25%;
+
+    --primary: 0 0% 65%;
+    --primary-foreground: 0 0% 15%;
+
+    --secondary: 0 0% 75%;
+    --secondary-foreground: 0 0% 20%;
+
+    --muted: 0 0% 82%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 0 0% 70%;
+    --accent-foreground: 0 0% 15%;
+
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --success: 150 45% 50%;
+    --success-foreground: 0 0% 100%;
+
+    --border: 0 0% 82%;
+    --input: 0 0% 88%;
+    --ring: 0 0% 70%;
+
+    /* Border Radius */
+    --radius: 1.5rem;
+
+    /* Neumorphic Shadows - Soft, Elevated UI Effect */
+    --shadow-neumorphic: 8px 8px 16px hsl(0 0% 75%), -8px -8px 16px hsl(0 0% 100%);
+    --shadow-neumorphic-inset: inset 6px 6px 12px hsl(0 0% 75%), inset -6px -6px 12px hsl(0 0% 100%);
+    --shadow-neumorphic-sm: 4px 4px 8px hsl(0 0% 78%), -4px -4px 8px hsl(0 0% 98%);
+    --shadow-neumorphic-lg: 12px 12px 24px hsl(0 0% 72%), -12px -12px 24px hsl(0 0% 100%);
+
+    /* Semantic Shadow Aliases */
+    --shadow-glow: var(--shadow-neumorphic);
+    --shadow-card: var(--shadow-neumorphic);
+    --shadow-hover: var(--shadow-neumorphic-lg);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  }
+
+  /* Dark Mode Support - Enhanced version */
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 222 47% 11%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --success: 150 45% 40%;
+    --success-foreground: 210 40% 98%;
+
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
+    --ring: 224 71% 41%;
+
+    /* Dark Mode Neumorphic Shadows */
+    --shadow-neumorphic: 8px 8px 16px hsl(222 47% 8%), -8px -8px 16px hsl(222 47% 14%);
+    --shadow-neumorphic-inset: inset 6px 6px 12px hsl(222 47% 8%), inset -6px -6px 12px hsl(222 47% 14%);
+    --shadow-neumorphic-sm: 4px 4px 8px hsl(222 47% 9%), -4px -4px 8px hsl(222 47% 13%);
+    --shadow-neumorphic-lg: 12px 12px 24px hsl(222 47% 7%), -12px -12px 24px hsl(222 47% 15%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    position: relative;
+    overflow-x: hidden;
+    transition: var(--transition-smooth);
+  }
+
+  /* Typography Improvements */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl;
+  }
+
+  p {
+    @apply leading-relaxed;
+  }
+
+  /* Smooth Scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Focus Styles for Accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* Animations */
+  @keyframes bgShift {
+    0%, 100% {
+      transform: translate(0, 0);
+    }
+    50% {
+      transform: translate(-10%, -10%);
+    }
+  }
+
+  @keyframes textGlow {
+    0%, 100% {
+      filter: brightness(1);
+    }
+    50% {
+      filter: brightness(1.3);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes shimmer {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+}
+
+@layer components {
+  /* Neumorphic Card Component */
+  .card-neumorphic {
+    @apply bg-background rounded-lg shadow-neumorphic transition-smooth;
+  }
+
+  .card-neumorphic:hover {
+    @apply shadow-neumorphic-lg;
+  }
+
+  .card-neumorphic-inset {
+    @apply bg-background rounded-lg shadow-neumorphic-inset;
+  }
+
+  /* Button Styles - Neumorphic */
+  .btn-neumorphic {
+    @apply px-6 py-3 rounded-lg font-medium shadow-neumorphic transition-smooth;
+    @apply hover:shadow-neumorphic-lg active:shadow-neumorphic-inset;
+    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply btn-neumorphic bg-primary text-primary-foreground;
+  }
+
+  .btn-secondary {
+    @apply btn-neumorphic bg-secondary text-secondary-foreground;
+  }
+
+  .btn-success {
+    @apply btn-neumorphic bg-success text-success-foreground;
+  }
+
+  .btn-destructive {
+    @apply btn-neumorphic bg-destructive text-destructive-foreground;
+  }
+
+  /* Input Styles */
+  .input-neumorphic {
+    @apply w-full px-4 py-3 rounded-lg bg-input shadow-neumorphic-inset;
+    @apply border border-border text-foreground placeholder:text-muted-foreground;
+    @apply transition-smooth focus:shadow-neumorphic focus:border-primary;
+    @apply focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-0;
+  }
+
+  /* Glass Card Effect */
+  .glass-card {
+    @apply backdrop-blur-xl bg-white/10 border border-white/20;
+    @apply rounded-lg shadow-neumorphic transition-smooth;
+  }
+
+  .glass-card:hover {
+    @apply bg-white/15 shadow-neumorphic-lg;
+  }
+
+  /* Gradient Text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+  }
+
+  /* Animated Gradient Background */
+  .gradient-animated {
+    background: linear-gradient(
+      -45deg,
+      hsl(var(--primary) / 0.2),
+      hsl(var(--accent) / 0.2),
+      hsl(var(--secondary) / 0.2),
+      hsl(var(--muted) / 0.2)
+    );
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Loading Skeleton */
+  .skeleton {
+    @apply relative overflow-hidden bg-muted rounded;
+  }
+
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      hsl(var(--background) / 0.5),
+      transparent
+    );
+    animation: shimmer 2s infinite;
+  }
+
+  /* Reveal Animation */
+  .reveal {
+    @apply opacity-0 translate-y-8 transition-smooth;
+  }
+
+  .reveal.is-visible {
+    @apply opacity-100 translate-y-0;
+  }
+
+  /* Metric Glow Effect */
+  .metric-glow {
+    @apply relative;
+  }
+
+  .metric-glow::before {
+    @apply content-[''] absolute inset-0 rounded-lg opacity-0 transition-smooth;
+    background: radial-gradient(circle at center, hsl(var(--primary) / 0.3), transparent 70%);
+  }
+
+  .metric-glow:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Container Utilities */
+  .container-app {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section-padding {
+    @apply py-12 md:py-16 lg:py-20;
+  }
+
+  /* Status Badges */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium;
+    @apply shadow-neumorphic-sm transition-smooth;
+  }
+
+  .badge-success {
+    @apply badge bg-success text-success-foreground;
+  }
+
+  .badge-destructive {
+    @apply badge bg-destructive text-destructive-foreground;
+  }
+
+  .badge-muted {
+    @apply badge bg-muted text-muted-foreground;
+  }
+
+  /* Divider */
+  .divider {
+    @apply h-px bg-gradient-to-r from-transparent via-border to-transparent;
+  }
+}
+
+@layer utilities {
+  /* Text Balance for Better Typography */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Hide Scrollbar but Keep Functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Custom Scroll Behavior */
+  .scroll-smooth {
+    scroll-behavior: smooth;
+  }
+
+  /* Perspective for 3D Transforms */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  /* Backdrop Blur Utilities */
+  .backdrop-blur-glass {
+    backdrop-filter: blur(12px) saturate(150%);
+  }
+}

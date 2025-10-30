@@ -7,6 +7,9 @@ export default defineConfig({
       entry: 'src/index.tsx'
     })
   ],
+  css: {
+    postcss: './postcss.config.js',
+  },
   build: {
     target: 'esnext',
     rollupOptions: {
