@@ -4,8 +4,10 @@
   "scripts": {
     "dev": "npm run build:css && vite",
     "dev:sandbox": "wrangler pages dev dist --ip 0.0.0.0 --port 3000",
-    "build": "npm run build:css",
+    "build": "npm run build:css && npm run build:app && npm run copy:static",
+    "build:app": "vite build",
     "build:css": "npx tailwindcss -i ./src/globals.css -o ./public/static/style.css --minify",
+    "copy:static": "cp -r public/static dist/",
     "watch:css": "npx tailwindcss -i ./src/globals.css -o ./public/static/style.css --watch",
     "preview": "wrangler pages dev dist",
     "deploy": "npm run build && wrangler pages deploy dist",
