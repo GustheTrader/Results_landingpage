@@ -560,6 +560,15 @@ app.get('/api/bets', async (c) => {
   let bets: BetRow[]
   if (status === 'pending') {
     bets = await getCurrentBets(c.env)
+  } else if (status && status.includes(',')) {
+    // Handle multiple statuses separated by comma
+    const statuses = status.split(',').map(s => s.trim())
+    const results = await Promise.all(
+      statuses.map(s => getBetsByStatus(c.env, s))
+    )
+    bets = results.flat().sort((a, b) =>
+      new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime()
+    )
   } else if (status) {
     bets = await getBetsByStatus(c.env, status)
   } else {
@@ -955,17 +964,19 @@ function HomePage({
         <section class="glass-card rounded-3xl p-8 reveal">
           <h2 class="text-3xl font-bold text-white mb-8 bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">Portfolio Overview</h2>
           <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <MetricCard label="Active Bets" value={currentBets.length.toString()} subtle />
-            <MetricCard label="Total Wagered" value={formatCurrency(totals.totalWagered)} />
+            <MetricCard label="Active Bets" value={currentBets.length.toString()} subtle dataMetric="active-bets" />
+            <MetricCard label="Total Wagered" value={formatCurrency(totals.totalWagered)} dataMetric="total-wagered" />
             <MetricCard
               label="Lifetime Net"
               value={formatCurrency(totals.netProfit)}
               tone={totals.netProfit >= 0 ? 'positive' : 'negative'}
+              dataMetric="lifetime-net"
             />
             <MetricCard
               label="Lifetime ROI"
               value={formatPercent(totals.blendedRoi)}
               tone={totals.blendedRoi >= 0 ? 'positive' : 'negative'}
+              dataMetric="lifetime-roi"
             />
           </div>
         </section>
@@ -1113,12 +1124,14 @@ function MetricCard({
   label,
   value,
   tone = 'neutral',
-  subtle
+  subtle,
+  dataMetric
 }: {
   label: string
   value: string
   tone?: 'positive' | 'negative' | 'neutral'
   subtle?: boolean
+  dataMetric?: string
 }) {
   const containerTone =
     tone === 'positive'
@@ -1132,7 +1145,7 @@ function MetricCard({
   return (
     <div class={`rounded-2xl border backdrop-blur-sm ${containerTone} ${glowClass} p-6 transition-all hover:scale-105`}>
       <p class={`text-xs uppercase tracking-wider font-semibold ${subtle ? 'text-slate-400' : 'text-slate-400'}`}>{label}</p>
-      <p class={`mt-3 text-2xl font-bold ${valueTone}`}>{value}</p>
+      <p class={`mt-3 text-2xl font-bold ${valueTone}`} data-metric={dataMetric}>{value}</p>
     </div>
   )
 }

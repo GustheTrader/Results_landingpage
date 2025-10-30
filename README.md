@@ -172,8 +172,74 @@ All admin routes require the `x-admin-token` header matching `ADMIN_TOKEN`.
    ```
 4. Confirm Supabase tables update via the dashboard or SQL editor.
 
+## Live Data Updates
+
+The dashboard now includes automatic real-time data refresh functionality:
+
+### Features
+- **Auto-refresh**: Dashboard data updates every 30 seconds
+- **Visual feedback**: Purple flash animation on updated elements
+- **Smart pausing**: Stops refreshing when tab is inactive to save resources
+- **Auto-resume**: Resumes when you return to the tab
+- **Console logging**: Check browser console for refresh status messages
+
+### Implementation
+The client-side JavaScript (`public/static/app.js`) automatically:
+1. Fetches current bets from `/api/bets?status=pending`
+2. Fetches recent results from `/api/bets?status=won,lost,push,void`
+3. Fetches and recalculates portfolio totals from `/api/reports`
+4. Updates the DOM with new data and visual feedback
+5. Repeats every 30 seconds while the page is visible
+
+### Data Attributes
+The following HTML elements are updated in real-time:
+- `[data-metric="active-bets"]` - Current open positions count
+- `[data-metric="total-wagered"]` - Lifetime total wagered
+- `[data-metric="lifetime-net"]` - Lifetime net profit
+- `[data-metric="lifetime-roi"]` - Lifetime ROI percentage
+- `#current-bets tbody` - Current bets table
+- `#recent-results tbody` - Recent graded bets table
+
+## Database Schema Correction
+
+**Important**: The original `supabase-seed-data.sql` file used incorrect column names. Use `supabase-seed-corrected.sql` instead, which matches the schema defined in `migrations/0001_init.sql`:
+
+### Correct Schema
+- **Bets table**: `title`, `description`, `stake`, `odds`, `decimal_odds`, `event_date`, `status`, `result_notes`, `category`
+- **Reports table**: `slug`, `label`, `report_date`, `total_wagered`, `total_return`, `net_profit`, `roi_percent`, `hit_rate`, `summary`, `source_pdf`
+
+## Environment Configuration
+
+For Vercel deployment, create a `.env` file based on `.env.example`:
+
+```bash
+cp .env.example .env
+```
+
+Required variables:
+- `SUPABASE_URL` - Your Supabase project URL
+- `SUPABASE_ANON_KEY` or `SUPABASE_SERVICE_ROLE_KEY` - Supabase API key
+- `GEMINI_API_KEY` - Google Gemini API key for PDF processing
+- `ADMIN_TOKEN` - Secure random string for admin authentication
+
+## Troubleshooting
+
+### No data showing on dashboard
+1. Check your environment variables are set correctly
+2. Verify database migrations ran successfully: `migrations/0001_init.sql`
+3. Load sample data: `supabase-seed-corrected.sql` (not the old version)
+4. Check browser console for API errors
+5. Verify Supabase RLS policies allow the required operations
+
+### Auto-refresh not working
+1. Open browser console (F12)
+2. Look for "Starting auto-refresh (30s interval)" message
+3. Check for fetch errors in the console
+4. Ensure `/api/bets` and `/api/reports` endpoints are accessible
+
 ## Future Enhancements
 - Persist processed PDFs to Supabase Storage or Cloudflare R2 for audit trails.
 - Surface upload history in the admin console via a dedicated `/api/uploads` route.
 - Add manual override tools for resolving unmatched bets directly from the UI.
 - Integrate email alerts when uploads fail or when unmatched bets remain.
+- Add WebSocket support for truly real-time updates without polling
