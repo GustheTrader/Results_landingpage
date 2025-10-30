@@ -7,6 +7,10 @@ export default defineConfig({
       entry: 'src/index.tsx'
     })
   ],
+  server: {
+    host: '0.0.0.0',
+    port: 5173
+  },
   css: {
     postcss: './postcss.config.js',
   },
