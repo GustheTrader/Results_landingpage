@@ -18,8 +18,17 @@ export default async function handler(req, res) {
     body
   })
 
-  // Call Hono app
-  const response = await app.fetch(request)
+  // Pass Vercel environment variables to Hono app context
+  const env = {
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    ADMIN_TOKEN: process.env.ADMIN_TOKEN,
+    SUPABASE_URL: process.env.SUPABASE_URL,
+    SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
+    SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY
+  }
+
+  // Call Hono app with environment context
+  const response = await app.fetch(request, env)
 
   // Convert Response to Vercel response
   res.status(response.status)

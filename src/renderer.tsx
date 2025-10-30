@@ -11,6 +11,7 @@ export const renderer = jsxRenderer(({ children }) => {
       </head>
       <body>{children}</body>
       <script src="/static/app.js"></script>
+      <script src="/static/admin.js"></script>
     </html>
   )
 }, {
